@@ -1,0 +1,217 @@
+
+#include <stdio.h>
+#include <stdlib.h>
+
+struct lista2 {
+int info;
+struct lista2*ant;
+struct lista2* prox;
+};
+typedef struct lista2 Lista2;
+
+//----Inserindo novo elemento----
+
+Lista2* lst_insere (Lista2* L, int s)
+{
+	Lista2* novo = (Lista2*) malloc(sizeof(Lista2));
+  if(novo == NULL)
+  {
+    exit(1);
+  }
+
+	novo->info = s;
+	novo->prox = L;
+  novo->ant = NULL;
+	
+	if(L != NULL)
+	{
+		L->ant = novo;
+	}
+
+  return novo;
+}
+
+//-----Libera-----
+Lista2* lst_libera (Lista2* L)
+{
+	Lista2* p = L;
+  
+	while (p != NULL) 
+	{
+		Lista2* t = p->prox; // guarda referência para próximo elemento 
+		free(p); 
+		p = t; // faz p apontar para o próximo 
+	}
+
+	return NULL;
+}
+
+//-----Separando-----
+
+Lista2* separa (Lista2* l, int n) 
+{
+  Lista2* p; // variável aux. que percorre a lista
+  Lista2* q; //variável aux. de nova lista
+
+  for (p = l;p != NULL;p = p->prox)
+  {
+    if (p->info == n) 
+    {
+      q = p->prox; 
+      p->prox = NULL; 
+      return q;
+    }
+  }
+
+  return NULL;
+}
+
+/*Novo elemento no FINAL da lista se não existir*/
+Lista2* ins_ultimo_cond (Lista2* L, int v)
+{
+  Lista2* p = L;
+  Lista2* ant = NULL;
+  
+   while (p!=NULL) //Procura elemento
+  {
+    ant=p;
+    if(p->info == v) 
+    {
+      return L;
+    }
+
+    p = p->prox;
+  }
+  
+  //insere o elemento
+  Lista2* novo = (Lista2*)malloc(sizeof(Lista2));
+  if(novo == NULL)
+  {
+    exit(1);
+  }
+  //aloca dados no novo elemento
+  novo->info = v;
+  novo->prox = NULL;
+
+  
+  if (ant==NULL) //Lista vazia
+  {
+    return novo;
+  }
+
+  ant->prox = novo;
+
+  return L;
+}
+
+//-----Concatena----
+
+Lista2* concatena(Lista2* l1,Lista2* l2)
+{
+  Lista2 *p =l1;
+  p->ant=NULL;
+
+  if(l1==NULL)
+  {
+    return l2;
+  }
+  if(l2==NULL)
+  {
+    return l1;
+  }
+  while(p->prox!=NULL)
+  {
+    p->ant = p;
+    p=p->prox;
+  }
+
+  p->prox=l2;
+
+  return l1;
+}
+
+//-----Buscando elemento----
+
+Lista2* busca(Lista2* L, int v)
+{
+	Lista2* ptr;
+	
+  for(ptr=L;ptr!=NULL;ptr=ptr->prox)
+	{
+		if(ptr->info==v)
+		{
+			return ptr;
+		}
+	}
+
+	return NULL;
+}
+
+//-----Imprimir-----
+
+void lst_imprime (Lista2* L)
+{
+	Lista2* pt;
+	
+  for (pt = L; pt != NULL; pt = pt->prox)
+	{
+		printf("Info: %d\n", pt->info);
+	}
+  
+}
+
+//-----Main------
+
+int main (void)
+{
+Lista2* l, *l2; /* declara uma lista não iniciada */
+l = NULL; /* inicia lista vazia */
+
+/* vai inserir no início da lista */
+l = lst_insere(l, 23); /* insere na lista o elemento 23 */
+l = lst_insere(l, 45); /* insere na lista o elemento 45 */
+l = lst_insere(l, 56); /* insere na lista o elemento 56 */
+l = lst_insere(l, 78); /* insere na lista o elemento 78 */
+lst_imprime(l); /* imprimirá: 78 56 45 23 */
+printf("\n");
+printf("\n");
+
+/*vai buscar um ponteiro para o nó com a informação 45*/
+Lista2* k = busca(l,45);
+if(k!=NULL)printf("info = %d\n", k->info); //imprimirá info = 45
+printf("\n");
+printf("\n");
+
+/*vai inserir o elemento no final da lista, condicionalmente.
+ Caso ele ainda não exista, insere, no final, um nó com a informação enviada;
+ caso a informação já exista em algum nó da lista, simplesmente não insere e retorna o ponteiro inicial*/
+l = ins_ultimo_cond(l,82);
+printf("\n");
+printf("\n");
+lst_imprime(l); /* imprimirá: 78 56 45 23 82 */
+
+l = ins_ultimo_cond(l,45);
+printf("\n");
+printf("\n");
+lst_imprime(l); /* imprimirá: 78 56 45 23 82 */
+
+//protótipo e descrição dessa função na Questão 1 do Arquivo de Exercícios, adaptando, agora, para lista dupla
+l2 = separa(l,56);
+printf("\n");
+printf("\n");
+lst_imprime(l); //imprimirá 78 56
+printf("\n");
+printf("\n");
+lst_imprime(l2); //imprimirá 45 23 82
+
+//protótipo e descrição dessa função na Questão 2 do Arquivo de Exercícios, adaptando, agora, para lista dupla
+l= concatena(l,l2);
+printf("\n");
+printf("\n");
+lst_imprime(l); //imprimirá 78 56 45 23 82
+
+/*vai liberar a lista l */ 
+l = lst_libera(l);
+l2 = NULL;
+return 0;
+}
