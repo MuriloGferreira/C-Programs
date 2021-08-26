@@ -1,0 +1,48 @@
+#include<stdio.h>
+#include<stdlib.h>
+// #define n 3
+
+int procura(float k, float *vet)
+{
+	int j,pos=0;
+	
+	for(j=0;j<3;j++)
+	{
+		if(vet[j] == k)
+		{
+			pos= j+1;
+			break;
+		}
+	}
+	return pos;
+}
+
+int main(void)
+{
+	int i,achou;
+	float vet[3];
+	float proc;
+	
+	//leitura dos valores
+	for(i=0;i<3;i++)
+	{
+		printf("Entre com os valores[%d]: ",i+1);
+		scanf("%f",&vet[i]);
+	}
+	
+	printf("\nEntre com o valor que deseja procurar: ");
+	scanf("%f",&proc);
+
+	achou = procura(proc,vet);
+  
+	if(achou == 0)
+	{
+		printf("\nO numero digitado nao existe no vetor!");
+	}
+	else
+	{
+		printf("\nO numero esta na posicao %d",achou);
+	}
+	
+	return 0;
+}
