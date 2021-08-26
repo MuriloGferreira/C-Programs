@@ -1,0 +1,79 @@
+#include<stdio.h>
+#include<stdlib.h>
+#define tam 3
+
+//função
+int busca_binaria(int n,float k, float *v);
+
+int main(void)
+{
+	int n;
+	
+	printf("Informe o tamanha do vetor: ");
+	scanf("%d",&n);
+	
+	int i,achou;
+	float *vet;
+	float proc;
+	
+	//alocação dinâmica
+	vet=(float*)malloc(n*sizeof(float));
+	if(vet==NULL)
+	{
+		printf("Memoria Insuficiente.\n");
+		exit(1);
+	}
+	
+	printf("\n");
+	//leitura dos valores para o vetor
+	for(i=0;i<n;i++)
+	{
+		printf("Entre com os valores[%d]: ",i);
+		scanf("%f",&vet[i]);
+	}
+	
+	//valor para ver si existe no vetor
+	printf("\nEntre com o valor que deseja procurar: ");
+	scanf("%f",&proc);
+	
+	//variavel recebendo o que a função retorna
+	achou = busca_binaria(n,proc,vet);
+    
+	//se achou for -1 não tem no vetor
+	if(achou == -1)
+	{
+		printf("\nO numero digitado nao existe no vetor!");
+	}
+	else//se não mostra a posição
+	{
+		printf("\nO numero esta na posicao: %d\n",achou);
+	}
+	
+	free(vet);
+	return 0;
+}
+int busca_binaria(int n,float k, float *v)
+{
+  int pos=0;
+  int a= 1;
+  int b=n,j;
+  //Enquanto
+  while(a<=b && pos == 0)
+  {
+    j=(a+b)/2;
+    if(v[j] == k)
+    {
+      pos=j;
+    }
+    else if(k>v[j])
+    {
+      a=j+1;
+    }
+    else 
+    {
+      b=j-1;
+    }
+  } 
+
+	return pos;
+}
