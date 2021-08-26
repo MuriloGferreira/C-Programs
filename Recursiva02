@@ -1,0 +1,32 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+/*Crie uma função recursiva que receba um vetor de inteiros e sua dimensão N e retorne a soma de todos os elementos do vetor, considere que N será >=1 */
+
+int func(int *vet, int N){
+
+  if(N==0)
+  {
+    return 0; 
+  
+  }
+    
+  int soma=vet[N-1]+func(vet,N-1);
+
+}
+
+int main(){
+
+ int qtd, vet[3], resp;
+
+  printf("Digite o tamanho do vetor:");
+  scanf("%d", &qtd);
+
+ for(int i=0; i<3; i++){
+  printf("Digite o vet[%d]:", i);
+  scanf("%d", &vet[i]);  
+ }
+
+ resp = func(vet,3);
+
+}
