@@ -1,0 +1,155 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct **lista {
+int info;
+struct lista* prox;
+};
+typedef struct lista Lista;
+
+Lista* lst_insere (Lista* L, int j){
+  Lista* novo = (Lista*)malloc(sizeof(Lista));
+  novo -> info = j;
+  novo -> prox = L;
+
+  return novo;
+}
+
+Lista* lst_libera(Lista* L){
+  Lista* p = L;
+  while(p != NULL){
+    Lista* t = p -> prox;
+    free(p);
+    p = t; 
+  }
+  return NULL;
+}
+
+Lista* concatena(Lista* l1, Lista* l2){ 
+  Lista* p = l1;
+  Lista* aft = NULL;
+
+  if(l1==NULL){
+    return l2;
+  }
+  else if(l2==NULL){ 
+    return l1;
+  }
+
+  while(p -> prox!=NULL){
+    aft = p;
+    p = p -> prox;
+  }
+
+  p -> prox = l2;
+  return l1;
+}
+
+Lista* separa(Lista* l, int n){
+  Lista* p;
+  Lista* aux;
+
+  for(p=l;p!=NULL;p=p -> prox){
+
+    if(p -> info == n){
+      aux = p -> prox;
+      p -> prox = NULL;
+
+      return aux;
+    }
+  }
+  return NULL;
+}
+
+Lista* busca_rec(Lista* L, int m){
+  Lista* p;
+
+  for(p=L;p!=NULL;p=p -> prox){
+
+    if(p -> info==m){
+      return p;
+    }
+  } 
+  return NULL;
+}
+
+Lista* ins_ultimo_cond(Lista* L, int m){
+  Lista*p = L;
+  Lista* novo = (Lista*)malloc(sizeof(Lista));
+  novo -> info = m;
+  novo -> prox = NULL;
+
+  if(p==NULL){
+    return novo;
+  }
+  while(p -> prox!=NULL){
+    
+    if(p -> info == m){
+      return L;
+    }
+    p = p -> prox;
+  }
+  p -> prox = novo;
+  return L;
+}
+
+void lst_imprime(Lista* L){
+  Lista* p;
+
+  for(p=L;p!=NULL;p=p -> prox){
+    
+    printf("\nInfo = %d", p->info);
+  }
+}
+
+int main (void)
+{
+Lista* l, *l2; /* declara uma lista não iniciada */
+l = NULL; /* inicia lista vazia */
+
+/* vai inserir no início da lista */
+l = lst_insere(l, 23); /* insere na lista o elemento 23 */
+l = lst_insere(l, 45); /* insere na lista o elemento 45 */
+l = lst_insere(l, 56); /* insere na lista o elemento 56 */
+l = lst_insere(l, 78); /* insere na lista o elemento 78 */
+lst_imprime(l); /* imprimirá: 78 56 45 23 */
+printf("\n");
+printf("\n");
+
+
+Lista* k = busca_rec(l,45);
+
+if(k!=NULL)printf("info = %d\n", k->info);
+printf("\n");
+printf("\n");
+
+l = ins_ultimo_cond(l,82);
+printf("\n");
+printf("\n");
+lst_imprime(l); /* imprimirá: 78 56 45 23 82 */
+
+l = ins_ultimo_cond(l,45);
+printf("\n");
+printf("\n");
+lst_imprime(l); /* imprimirá: 78 56 45 23 82 */
+
+//protótipo e descrição dessa função na Questão 1 do Arquivo de Exercícios
+l2 = separa(l,56);
+printf("\n");
+printf("\n");
+lst_imprime(l); //imprimirá 78 56
+printf("\n");
+printf("\n");
+lst_imprime(l2); //imprimirá 45 23 82
+
+//protótipo e descrição dessa função na Questão 2 do Arquivo de Exercícios
+l= concatena(l,l2);
+printf("\n");
+printf("\n");
+lst_imprime(l); //imprimirá 78 56 45 23 82
+
+/*vai liberar a lista l */ 
+l = lst_libera(l);
+l2 = NULL;
+return 0;
+}
